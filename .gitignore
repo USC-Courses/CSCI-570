@@ -1,2 +1,21 @@
+# ignore files without extensions
+*
+!/**/
+!*.*
+
 # macOS
 .DS_Store
+
+# IDEs & Editors
+.idea
+.vscode
+
+# C++
+*.dSYM
+
+# Java
+*.class
+
+# Python
+__pycache__/
+*.py[cod]
