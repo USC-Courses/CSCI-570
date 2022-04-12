@@ -1,3 +1,9 @@
 #!/bin/bash
-g++ -O2 -std=c++17 -o efficient efficient.cpp
-./efficient "$1" "$2"
+DIR=$(pwd)
+WDIR=$(dirname "$0")
+g++ -O2 -std=c++17 -o "${WDIR}/efficient" "${WDIR}/efficient.cpp"
+if [ ${WDIR:0:1} == '/' ]; then
+    "${WDIR}/efficient" "$1" "$2"
+else
+    ./"${WDIR}/efficient" "$1" "$2"
+fi

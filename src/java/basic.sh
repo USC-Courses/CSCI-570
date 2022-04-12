@@ -1,3 +1,5 @@
 #!/bin/bash
-javac Basic.java
-java Basic "$1" "$2"
+DIR=$(pwd)
+WDIR=$(dirname "$0")
+javac "${WDIR}/Basic.java"
+java --class-path "${WDIR}" Basic "$1" "$2"

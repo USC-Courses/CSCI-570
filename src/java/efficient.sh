@@ -1,3 +1,5 @@
 #!/bin/bash
-javac Efficient.java
-java Efficient "$1" "$2"
+DIR=$(pwd)
+WDIR=$(dirname "$0")
+javac "${WDIR}/Efficient.java"
+java --class-path "${WDIR}" Efficient "$1" "$2"
