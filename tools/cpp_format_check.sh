@@ -5,7 +5,7 @@ while [[ $# -gt 0 ]]; do
     -i | --in-place) INPLACE=1 ;;
     -h | --help)
         echo "Usage: $(basename "$0") [-i --in-place]"
-        ecit 0
+        exit 0
         ;;
     *)
         echo "ERROR: Unrecognized argument: $1"
