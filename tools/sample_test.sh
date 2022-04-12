@@ -16,20 +16,30 @@ function run_test {
         filename=${input_file##*/}
         no=${filename//[^0-9]/}
 
-        bash ${script_dir}/basic.sh ${input_file} ${data_dir}/${language}_basic${no}.out &>/dev/null
-        diff ${output_file} ${data_dir}/${language}_basic${no}.out
-        if [ $? != 1 ]; then
-            echo "${language} basic program test ${no}: ${filename} passed"
+        basic_output=${data_dir}/${language}_basic${no}.out
+        bash ${script_dir}/basic.sh ${input_file} ${basic_output} &>/dev/null
+        if [ -e ${basic_output} ]; then
+            diff ${output_file} ${basic_output}
+            if [ $? != 1 ]; then
+                echo -e "${language} basic     program test ${no}: ${filename} passed"
+            else
+                echo -e "${language} basic     program test ${no}: ${filename} failed"
+            fi
         else
-            echo "${language} basic program test ${no}: ${filename} failed"
+            echo -e "${language} basic     program test ${no}: ${filename} ignored"
         fi
 
-        bash ${script_dir}/efficient.sh ${input_file} ${data_dir}/${language}_efficient${no}.out &>/dev/null
-        diff ${output_file} ${data_dir}/${language}_efficient${no}.out
-        if [ $? != 1 ]; then
-            echo "${language} efficient program test ${no}: ${filename} passed"
+        efficient_output=${data_dir}/${language}_efficient${no}.out
+        bash ${script_dir}/efficient.sh ${input_file} ${efficient_output} &>/dev/null
+        if [ -e ${efficient_output} ]; then
+            diff ${output_file} ${efficient_output}
+            if [ $? != 1 ]; then
+                echo -e "${language} efficient program test ${no}: ${filename} passed"
+            else
+                echo -e "${language} efficient program test ${no}: ${filename} failed"
+            fi
         else
-            echo "$language efficient program test ${no}: $filename failed"
+            echo -e "${language} efficient program test ${no}: ${filename} ignored"
         fi
     done
     echo "--------------------------------------------------"
