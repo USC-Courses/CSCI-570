@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <istream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -18,6 +19,44 @@
 extern int error;
 
 struct TestCase {
+ public:
+  TestCase() = default;
+
+  static void GenerateString(std::istream& is, std::string& s) {
+    char c;
+    int32_t pos;
+    is >> s;
+    is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    while (isdigit(c = is.get())) {
+      is.unget();
+      is >> pos;
+      is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+      int n = s.size();
+      pos += 1;
+      s.resize(n + n);
+      copy(s.rbegin() + n, s.rbegin() + 2 * n, s.rbegin() + n - pos);
+      copy(s.rbegin() + n - pos, s.rbegin() + (n - pos) * 2, s.rbegin());
+    }
+    is.unget();
+  }
+
+  friend std::istream& operator>>(std::istream& is, TestCase& test_case) {
+    GenerateString(is, test_case.s1);
+    GenerateString(is, test_case.s2);
+    return is;
+  }
+
+  friend std::ostream& operator<<(std::ostream& os, const TestCase& test_case) {
+    os << test_case.alignment_cost << "\n"  // alignment cost
+       << test_case.alignment1 << "\n"      // alignment of s1
+       << test_case.alignment2 << "\n"      // alignment of s2
+       << test_case.time_elapsed << "\n"    // time elapsed
+       << test_case.memory_used;            // memory used
+    return os;
+  }
+
+ public:
   std::string s1;
   std::string s2;
   std::string alignment1;
@@ -29,6 +68,10 @@ struct TestCase {
 
 class FileIO {
  public:
+  FileIO() = default;
+  explicit FileIO(std::string input_path, std::string output_path)
+      : input_path_(input_path), output_path_(output_path) {}
+
   void Parse(int argc, char* argv[]) {
     if (argc != 3) {
       std::string name = argv[0];
@@ -49,8 +92,7 @@ class FileIO {
       exit(2);
     }
 
-    GenerateString(fin, test_case.s1);
-    GenerateString(fin, test_case.s2);
+    fin >> test_case;
     fin.close();
   }
 
@@ -61,32 +103,8 @@ class FileIO {
       exit(2);
     }
 
-    fout << test_case.alignment_cost << "\n"  // alignment cost
-         << test_case.alignment1 << "\n"      // alignment of s1
-         << test_case.alignment2 << "\n"      // alignment of s2
-         << test_case.time_elapsed << "\n"    // time elapsed
-         << test_case.memory_used;            // memory used
+    fout << test_case;
     fout.close();
-  }
-
- private:
-  void GenerateString(std::ifstream& fin, std::string& s) {
-    char c;
-    int32_t pos;
-    fin >> s;
-    fin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    while (isdigit(c = fin.get())) {
-      fin.unget();
-      fin >> pos;
-      fin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-      int n = s.size();
-      pos += 1;
-      s.resize(n + n);
-      std::copy(s.rbegin() + n, s.rbegin() + 2 * n, s.rbegin() + n - pos);
-      std::copy(s.rbegin() + n - pos, s.rbegin() + (n - pos) * 2, s.rbegin());
-    }
-    fin.unget();
   }
 
  private:
@@ -96,6 +114,8 @@ class FileIO {
 
 class BasicSolution {
  public:
+  BasicSolution() = default;
+
   void Solve(TestCase& test_case) {
     auto start = std::chrono::system_clock::now();
 
