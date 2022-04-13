@@ -47,7 +47,7 @@ function run_test {
         basic_output=${data_dir}/${language}_basic${no}.out
         bash ${script_dir}/basic.sh ${input_file} ${basic_output} &>/dev/null
         if [ -e ${basic_output} ]; then
-            diff ${output_file} ${basic_output}
+            diff <(head -n 1 ${output_file}) <(head -n 1 ${basic_output})
             if [ $? != 1 ]; then
                 echo -e "${language} basic     program test ${no}: ${filename} passed"
             else
@@ -60,7 +60,7 @@ function run_test {
         efficient_output=${data_dir}/${language}_efficient${no}.out
         bash ${script_dir}/efficient.sh ${input_file} ${efficient_output} &>/dev/null
         if [ -e ${efficient_output} ]; then
-            diff ${output_file} ${efficient_output}
+            diff <(head -n 1 ${output_file}) <(head -n 1 ${efficient_output})
             if [ $? != 1 ]; then
                 echo -e "${language} efficient program test ${no}: ${filename} passed"
             else
