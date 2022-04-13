@@ -109,7 +109,52 @@ class BasicSolution {
 
  private:
   void SolveInternal(TestCase& test_case) {
-    // TODO(XJDKC): implement basic solution
+    auto& s1 = test_case.s1;
+    auto& s2 = test_case.s2;
+    int32_t n = s1.size();
+    int32_t m = s2.size();
+    std::vector<std::vector<int32_t>> dp(n + 1, std::vector<int32_t>(m + 1, 0));
+
+    for (int i = 1; i <= n; ++i) {
+      dp[i][0] = dp[i - 1][0] + kGapPenalty;
+    }
+    for (int i = 1; i <= m; ++i) {
+      dp[0][i] = dp[0][i - 1] + kGapPenalty;
+    }
+
+    // DP
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < m; ++j) {
+        int32_t mismatch_penalty = GetMismatchPenalty(s1[i], s2[j]);
+        dp[i + 1][j + 1] = std::min(dp[i + 1][j], dp[i][j + 1]) + kGapPenalty;
+        dp[i + 1][j + 1] = std::min(dp[i + 1][j + 1], dp[i][j] + mismatch_penalty);
+      }
+    }
+    test_case.alignment_cost = dp[n][m];
+
+    // Backtracking
+    auto& alignment1 = test_case.alignment1;
+    auto& alignment2 = test_case.alignment2;
+    alignment1.reserve(std::max(n, m));
+    alignment2.reserve(std::max(n, m));
+    for (int i = n - 1, j = m - 1; i >= 0 || j >= 0;) {
+      if (i >= 0 && j >= 0 && dp[i + 1][j + 1] == dp[i][j] + GetMismatchPenalty(s1[i], s2[j])) {
+        alignment1 += s1[i--];
+        alignment2 += s2[j--];
+      } else if (j >= 0 && dp[i + 1][j + 1] == dp[i + 1][j] + kGapPenalty) {
+        alignment1 += '_';
+        alignment2 += s2[j--];
+      } else if (i >= 0 && dp[i + 1][j + 1] == dp[i][j + 1] + kGapPenalty) {
+        alignment1 += s1[i--];
+        alignment2 += '_';
+      }
+    }
+    std::reverse(alignment1.begin(), alignment1.end());
+    std::reverse(alignment2.begin(), alignment2.end());
+  }
+
+  inline int32_t GetMismatchPenalty(char lhs, char rhs) {
+    return kMismatchPenalty[kCharToIndex[lhs - 'A']][kCharToIndex[rhs - 'A']];
   }
 
   int64_t GetTotalMemory() {
