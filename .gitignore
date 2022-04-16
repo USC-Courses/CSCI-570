@@ -19,3 +19,6 @@
 # Python
 __pycache__/
 *.py[cod]
+
+# Others
+*.out
