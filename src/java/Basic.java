@@ -9,19 +9,19 @@ class Basic {
     public static List<Integer> num2 = new ArrayList<Integer>();
     public static char[] t1;
     public static char[] t2;
-    int opt2[][] ;
     public static List<Integer> test2 = new ArrayList<Integer>();
-    //public static List<List<Integer>> opt = new ArrayList<List<Integer>>();
     public static int metrix[][] = {{0, 110, 48, 94},
             {110, 0, 118, 48},
             {48, 118, 0, 110},
             {94, 48, 110, 0}};
-    void test(){
+
+    void test() {
         System.out.println(Runtime.getRuntime().totalMemory());
-        for(int i=0;i<10000;i++)
+        for (int i = 0; i < 10000; i++)
             test2.add(0);
         System.out.println(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
     }
+
     public int getpenaltyvalue(char a, char b) {
         int indexa = 0;
         int indexb = 0;
@@ -71,7 +71,7 @@ class Basic {
         double beforeUsedMem = getMemoryInKB();
         int l1 = a.length();
         int l2 = b.length();
-        int opt[][]=new int[l1+1][l2+1];
+        int opt[][] = new int[l1 + 1][l2 + 1];
         int gap = 30;
         for (int i = 1; i <= l1; i++) {
             opt[i][0] = opt[i - 1][0] + gap;
@@ -135,7 +135,7 @@ class Basic {
         }
         t1 = convertListtoChar(arr1);
         t2 = convertListtoChar(arr2);
-        opt2=opt;
+        opt2 = opt;
         return opt[l1][l2];
     }
 
@@ -182,10 +182,11 @@ class Basic {
         }
         return ret;
     }
-    void filewrite(String []res,String filepath){
+
+    void filewrite(String[] res, String filepath) {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filepath));
-            for(int i=0;i< res.length;i++){
+            for (int i = 0; i < res.length; i++) {
                 out.write(res[i]);
                 out.newLine();
             }
@@ -195,6 +196,7 @@ class Basic {
         }
 
     }
+
     public char[] convertListtoChar(List<Character> l) {
         char[] ret = new char[l.size()];
         for (int i = 0; i < ret.length; i++) {
@@ -205,35 +207,33 @@ class Basic {
 
     private static double getMemoryInKB() {
         double total = Runtime.getRuntime().totalMemory();
-        return (total - Runtime.getRuntime().freeMemory()) /10e3;
+        return (total - Runtime.getRuntime().freeMemory()) / 10e3;
     }
 
     private static double getTimeInMilliseconds() {
         return System.nanoTime() / 1e6;
     }
 
-    public static void main(String args[] ) {
+    public static void main(String args[]) {
         Basic s = new Basic();
-        //s.test();
         s.readFile(args[0]);
         s.readData();
         String res = s.generateNumber(s1, s.convertListtoInt(num1));
         String res2 = s.generateNumber(s2, s.convertListtoInt(num2));
         double beforeUsedMem = getMemoryInKB();
         double startTime = getTimeInMilliseconds();
-        int cost=s.SequenceAlignment(res, res2);
+        int cost = s.SequenceAlignment(res, res2);
         double afterUsedMem = getMemoryInKB();
         double endTime = getTimeInMilliseconds();
         double totalUsage = afterUsedMem - beforeUsedMem;
         double totalTime = endTime - startTime;
-        String [] output=new String[5];
-        output[0]=String.valueOf(cost);
-        output[1]=String.valueOf(t1);
-        output[2]=String.valueOf(t2);
-        output[3]=totalTime+"";
-        output[4]=totalUsage+"";
-
-        s.filewrite(output,args[1]);
+        String[] output = new String[5];
+        output[0] = String.valueOf(cost);
+        output[1] = String.valueOf(t1);
+        output[2] = String.valueOf(t2);
+        output[3] = totalTime + "";
+        output[4] = totalUsage + "";
+        s.filewrite(output, args[1]);
     }
 
 }
