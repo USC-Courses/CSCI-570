@@ -36,6 +36,10 @@ jobs:
       # Setup Python Environment
       - uses: actions/setup-python@v3.1.1
 
+      # Runs a single command using the runners shell
+      - name: Install psutil
+        run: pip3 install psutil
+
       # Runs a set of commands using the runners shell
       - name: Compile and Test C++, Java and Python programs
         run: ./tools/sample_test.sh -c
