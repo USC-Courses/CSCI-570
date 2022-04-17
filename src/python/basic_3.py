@@ -12,10 +12,10 @@ args = parser.parse_args()
 class Solution:
     # mismatch cost
     a = [
-        [0, 110, 48, 94],
-        [110, 0, 118, 48],
-        [48, 118, 0, 110],
-        [94, 48, 110, 0]
+        [0, 110, 48, 94],  # A
+        [110, 0, 118, 48],  # C
+        [48, 118, 0, 110],  # G
+        [94, 48, 110, 0]  # T
     ]
     a_index = {'A': 0, 'C': 1, 'G': 2, 'T': 3}
     # gap penalty
@@ -52,7 +52,7 @@ class Solution:
                 elif str.isdigit(line):
                     position = int(line)
                     string = s.pop()
-                    string = string[: position + 1] + string + string[position + 1:]
+                    string = string[:position + 1] + string + string[position + 1:]
                     s.append(string)
             self.s1 = s[0]
             self.s2 = s[1]
@@ -94,7 +94,8 @@ class Solution:
         while i > 0 or j > 0:
             char1 = self.s1[i - 1]
             char2 = self.s2[j - 1]
-            if i > 0 and j > 0 and dp[i][j] == dp[i - 1][j - 1] + Solution.get_mismatch_cost(char1, char2):
+            if i > 0 and j > 0 and dp[i][j] == dp[i - 1][j - 1] + Solution.get_mismatch_cost(
+                    char1, char2):
                 alignment1.append(char1)
                 alignment2.append(char2)
                 i -= 1
