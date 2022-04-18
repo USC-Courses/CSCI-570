@@ -45,26 +45,28 @@ function run_test {
         no=${filename//[^0-9]/}
 
         basic_output=${data_dir}/${language}_basic${no}.out
-        bash ${script_dir}/basic.sh ${input_file} ${basic_output} &>/dev/null
+        bash -e ${script_dir}/basic.sh ${input_file} ${basic_output} || exit $?
         if [ -e ${basic_output} ]; then
             diff <(head -n 1 ${output_file}) <(head -n 1 ${basic_output})
             if [ $? != 1 ]; then
                 echo -e "${language} basic     program test ${no}: ${filename} passed"
             else
                 echo -e "${language} basic     program test ${no}: ${filename} failed"
+                exit 2
             fi
         else
             echo -e "${language} basic     program test ${no}: ${filename} ignored"
         fi
 
         efficient_output=${data_dir}/${language}_efficient${no}.out
-        bash ${script_dir}/efficient.sh ${input_file} ${efficient_output} &>/dev/null
+        bash -e ${script_dir}/efficient.sh ${input_file} ${efficient_output} || exit $?
         if [ -e ${efficient_output} ]; then
             diff <(head -n 1 ${output_file}) <(head -n 1 ${efficient_output})
             if [ $? != 1 ]; then
                 echo -e "${language} efficient program test ${no}: ${filename} passed"
             else
                 echo -e "${language} efficient program test ${no}: ${filename} failed"
+                exit 2
             fi
         else
             echo -e "${language} efficient program test ${no}: ${filename} ignored"
