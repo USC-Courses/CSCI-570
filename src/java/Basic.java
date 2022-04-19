@@ -132,6 +132,13 @@ class Basic {
                     break;
                 }
             }
+            if(cost==0&&(indexi!=0||indexj!=0)){
+                while(indexi-1>=0){
+                    arr1.add(a.charAt(indexi-1));
+                    arr2.add(b.charAt(indexi-1));
+                    indexi--;
+                }
+            }
         }
         t1 = convertListtoChar(arr1);
         t2 = convertListtoChar(arr2);
