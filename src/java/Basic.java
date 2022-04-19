@@ -135,7 +135,6 @@ class Basic {
         }
         t1 = convertListtoChar(arr1);
         t2 = convertListtoChar(arr2);
-        opt2 = opt;
         return opt[l1][l2];
     }
 
