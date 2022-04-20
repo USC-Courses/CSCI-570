@@ -94,18 +94,18 @@ class Efficient {
         String reversey = new StringBuilder(y).reverse().toString();
         if (m <= 2 || n <= 2) {
             int mincost = SequenceAlignment(x, y);
-            return new String[]{String.valueOf(t1), String.valueOf(t2),String.valueOf(mincost)};
+            return new String[]{String.valueOf(t1), String.valueOf(t2), String.valueOf(mincost)};
         }
         String left = y.substring(0, n / 2);
         String test2 = reversey.substring(0, n / 2);
         int leftcost = SequnceAlignmentEfficient(y.substring(0, n / 2), x);
         int leftopt[][] = num;
-        int rightcost = SequnceAlignmentEfficient(reversey.substring(0, n-(n / 2)), reversex);
+        int rightcost = SequnceAlignmentEfficient(reversey.substring(0, n - (n / 2)), reversex);
         int rightopt[][] = num;
         int mincost = Integer.MAX_VALUE / 2;
         int index = -1;
         for (int i = 0; i <= m; i++) {
-            int sumCost = rightopt[m-i][0] + leftopt[i][0];
+            int sumCost = rightopt[m - i][0] + leftopt[i][0];
             if (sumCost < mincost) {
                 mincost = sumCost;
                 index = i;
@@ -116,13 +116,13 @@ class Efficient {
         String[] mergestring = new String[3];
         mergestring[0] = charlist1[0] + charlist2[0];
         mergestring[1] = charlist1[1] + charlist2[1];
-        mergestring[2] = String.valueOf(Integer.parseInt(charlist1[2])+Integer.parseInt(charlist2[2]));
+        mergestring[2] = String.valueOf(Integer.parseInt(charlist1[2]) + Integer.parseInt(charlist2[2]));
         return mergestring;
     }
 
     int SequenceAlignment(String a, String b) {
-        if(a.equals(b)){
-            t1=t2=a.toCharArray();
+        if (a.equals(b)) {
+            t1 = t2 = a.toCharArray();
             return 0;
         }
         int l1 = a.length();
@@ -269,7 +269,7 @@ class Efficient {
 
     private static double getMemoryInKB() {
         double total = Runtime.getRuntime().totalMemory();
-        return (total - Runtime.getRuntime().freeMemory()) / 10e3;
+        return (total - Runtime.getRuntime().freeMemory()) / 1e3;
     }
 
     private static double getTimeInMilliseconds() {
