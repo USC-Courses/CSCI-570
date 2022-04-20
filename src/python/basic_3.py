@@ -9,6 +9,13 @@ parser.add_argument('output_path', help='output file path', type=str)
 args = parser.parse_args()
 
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss / 1024)  # in Kilobytes
+    return memory_consumed
+
+
 class Solution:
     # mismatch cost
     a = [
@@ -27,12 +34,6 @@ class Solution:
         self.output_path = output_file_path
         self.s1 = ''
         self.s2 = ''
-
-    def process_memory(self):
-        process = psutil.Process()
-        memory_info = process.memory_info()
-        memory_consumed = int(memory_info.rss / 1024)  # in Kilobytes
-        self.result['memory_consumed'] = str(memory_consumed)
 
     def time_wrapper(self):
         start_time = time.time()
@@ -70,6 +71,8 @@ class Solution:
         return cls.a[cls.a_index[char1]][cls.a_index[char2]]
 
     def sequence_alignment_basic(self):
+        memory_consumed_begin = process_memory()
+
         n, m = len(self.s1), len(self.s2)  # (X..n, Y..m)
         dp = [[0] * (m + 1) for _ in range(n + 1)]
 
@@ -86,8 +89,6 @@ class Solution:
                 char2 = self.s2[j - 1]
                 dp[i][j] = min(dp[i - 1][j - 1] + Solution.get_mismatch_cost(char1, char2),
                                dp[i - 1][j] + Solution.delta, dp[i][j - 1] + Solution.delta)
-
-        self.process_memory()
 
         # Backtracking
         alignment1 = []
@@ -114,9 +115,12 @@ class Solution:
         alignment1.reverse()
         alignment2.reverse()
 
+        memory_consumed_end = process_memory()
+
         self.result['alignment_cost'] = str(dp[n][m])
         self.result['alignment1'] = "".join(alignment1)
         self.result['alignment2'] = "".join(alignment2)
+        self.result['memory_consumed'] = str(memory_consumed_end - memory_consumed_begin)
 
 
 if __name__ == '__main__':
