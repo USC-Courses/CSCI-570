@@ -132,10 +132,10 @@ class Basic {
                     break;
                 }
             }
-            if(cost==0&&(indexi!=0||indexj!=0)){
-                while(indexi-1>=0){
-                    arr1.add(a.charAt(indexi-1));
-                    arr2.add(b.charAt(indexi-1));
+            if (cost == 0 && (indexi != 0 || indexj != 0)) {
+                while (indexi - 1 >= 0) {
+                    arr1.add(a.charAt(indexi - 1));
+                    arr2.add(b.charAt(indexi - 1));
                     indexi--;
                 }
             }
@@ -213,7 +213,7 @@ class Basic {
 
     private static double getMemoryInKB() {
         double total = Runtime.getRuntime().totalMemory();
-        return (total - Runtime.getRuntime().freeMemory()) / 10e3;
+        return (total - Runtime.getRuntime().freeMemory()) / 1e3;
     }
 
     private static double getTimeInMilliseconds() {
