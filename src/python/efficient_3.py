@@ -8,6 +8,13 @@ parser.add_argument('output_path', help='output file path', type=str)
 args = parser.parse_args()
 
 
+def process_memory():
+    process = psutil.Process()
+    memory_info = process.memory_info()
+    memory_consumed = int(memory_info.rss / 1024)  # in Kilobytes
+    return memory_consumed
+
+
 class Solution:
     # mismatch cost
     a = [
@@ -27,18 +34,18 @@ class Solution:
         self.s1 = ''
         self.s2 = ''
 
-    def process_memory(self):
-        process = psutil.Process()
-        memory_info = process.memory_info()
-        memory_consumed = int(memory_info.rss / 1024)  # in Kilobytes
-        self.result['memory_consumed'] = max(memory_consumed, self.result['memory_consumed'])
-
-    def time_wrapper(self):
+    def time_and_memory_wrapper(self):
         start_time = time.time()
+        process_memory_start = process_memory()
+
         self.result.update(self.divide_and_conquer(self.s1, self.s2))
+
         end_time = time.time()
+        process_memory_end = process_memory()
         time_taken = (end_time - start_time) * 1000  # in Milliseconds
-        self.result['time_taken'] = str(time_taken)
+
+        self.result['time_taken'] = time_taken
+        self.result['memory_consumed'] = process_memory_end - process_memory_start
 
     def read_input(self):  # read input and generate strings
         with open(self.input_path, 'r') as f:
@@ -61,7 +68,7 @@ class Solution:
             f.write(str(self.result['cost']) + '\n')
             f.write(self.result['alignment1'] + '\n')
             f.write(self.result['alignment2'] + '\n')
-            f.write(self.result['time_taken'] + '\n')
+            f.write(str(self.result['time_taken']) + '\n')
             f.write(str(self.result['memory_consumed']))
 
     @classmethod
@@ -165,8 +172,6 @@ class Solution:
             left = self.divide_and_conquer(s1_left, s2_left)
             right = self.divide_and_conquer(s1_right, s2_right)
 
-            self.process_memory()
-
             # Merge
             cost = left['cost'] + right['cost']
             alignment1 = alignment1 + left['alignment1'] + right['alignment1']
@@ -177,5 +182,5 @@ class Solution:
 if __name__ == '__main__':
     solution = Solution(args.input_path, args.output_path)
     solution.read_input()
-    solution.time_wrapper()
+    solution.time_and_memory_wrapper()
     solution.output()
