@@ -87,6 +87,8 @@ class Solution:
                 dp[i][j] = min(dp[i - 1][j - 1] + Solution.get_mismatch_cost(char1, char2),
                                dp[i - 1][j] + Solution.delta, dp[i][j - 1] + Solution.delta)
 
+        self.process_memory()
+
         # Backtracking
         alignment1 = []
         alignment2 = []
@@ -121,5 +123,4 @@ if __name__ == '__main__':
     solution = Solution(args.input_path, args.output_path)
     solution.read_input()
     solution.time_wrapper()
-    solution.process_memory()
     solution.output()
