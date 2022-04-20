@@ -51,7 +51,7 @@ class Solution:
                 elif str.isdigit(line):
                     position = int(line)
                     string = s.pop()
-                    string = string[: position + 1] + string + string[position + 1:]
+                    string = string[:position + 1] + string + string[position + 1:]
                     s.append(string)
             self.s1 = s[0]
             self.s2 = s[1]
@@ -97,8 +97,10 @@ class Solution:
         s1_mid = n // 2
         s1_left = s1[:s1_mid]
         s1_right_reverse = s1[s1_mid:][::-1]
-        dp = [Solution.sequence_alignment_efficient(s1_left, s2),
-              Solution.sequence_alignment_efficient(s1_right_reverse, s2[::-1])]
+        dp = [
+            Solution.sequence_alignment_efficient(s1_left, s2),
+            Solution.sequence_alignment_efficient(s1_right_reverse, s2[::-1])
+        ]
 
         min_cost = float('INF')
         idx = -1
@@ -125,8 +127,9 @@ class Solution:
             # basic DP
             for i in range(1, n + 1):
                 for j in range(1, m + 1):
-                    dp[i][j] = min(dp[i - 1][j - 1] + Solution.get_mismatch_cost(s1[i - 1], s2[j - 1]),
-                                   dp[i][j - 1] + Solution.delta, dp[i - 1][j] + Solution.delta)
+                    dp[i][j] = min(
+                        dp[i - 1][j - 1] + Solution.get_mismatch_cost(s1[i - 1], s2[j - 1]),
+                        dp[i][j - 1] + Solution.delta, dp[i - 1][j] + Solution.delta)
             cost = dp[n][m]
 
             # backtrack
