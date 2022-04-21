@@ -189,7 +189,7 @@ class BasicSolution {
     int returnCode = getrusage(RUSAGE_SELF, &usage);
     if (returnCode == 0) {
 #if __APPLE__
-      // the units of the ru_maxrss on macOS are bites
+      // the units of the ru_maxrss on macOS are bytes
       return usage.ru_maxrss / 1024.0;
 #else
       // the units of the ru_maxrss on Linux are kilobytes
