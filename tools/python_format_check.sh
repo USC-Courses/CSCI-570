@@ -16,8 +16,13 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+pushd $(pwd) >/dev/null
+cd $(dirname "$0")/../
+
 if [ ${INPLACE} -eq 0 ]; then
-    find src/python -name '*.py' | xargs yapf -d
+    find src/python plot/ -name '*.py' | xargs yapf -d
 else
-    find src/python -name '*.py' | xargs yapf -i
+    find src/python plot/ -name '*.py' | xargs yapf -i
 fi
+
+popd >/dev/null

@@ -21,4 +21,5 @@ __pycache__/
 *.py[cod]
 
 # Others
+out/
 *.out
