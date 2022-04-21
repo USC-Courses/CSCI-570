@@ -61,9 +61,9 @@ struct TestCase {
   std::string s2;
   std::string alignment1;
   std::string alignment2;
-  double time_elapsed = 0;
-  int64_t memory_used = 0;
   int32_t alignment_cost = 0;
+  double time_elapsed = 0;
+  double memory_used = 0;
 };
 
 class FileIO {
@@ -184,11 +184,17 @@ class BasicSolution {
     return kMismatchPenalty[kCharToIndex[lhs - 'A']][kCharToIndex[rhs - 'A']];
   }
 
-  int64_t GetTotalMemory() {
+  double GetTotalMemory() {
     struct rusage usage;
     int returnCode = getrusage(RUSAGE_SELF, &usage);
     if (returnCode == 0) {
+#if __APPLE__
+      // the units of the ru_maxrss on macOS are bites
+      return usage.ru_maxrss / 1024.0;
+#else
+      // the units of the ru_maxrss on Linux are kilobytes
       return usage.ru_maxrss;
+#endif
     } else {
       // It should never occur. Check man getrusage for more info to debug.
       printf("error %d", errno);
