@@ -79,15 +79,11 @@ if [ ${TEST_DATAPOINTS} -ne 0 ]; then
 fi
 
 # Jump to the root directory of this repo
-DIR=$(pwd)
-WDIR=$(dirname "$0")/../
-if [ ${WDIR:0:1} != "/" ]; then
-    WDIR=$DIR/$WDIR
-fi
-cd "$WDIR"
+pushd $(pwd) >/dev/null
+cd $(dirname "$0")/../
 
 # Create out folder
-mkdir ${data_dir}/out
+mkdir -p ${data_dir}/out
 
 # Run tests
 echo 'Test C++'
@@ -105,4 +101,4 @@ if [ ${CLEAN_FLAG} -ne 0 ]; then
     rm -rf ${data_dir}/out/
 fi
 
-cd "$DIR"
+popd >/dev/null

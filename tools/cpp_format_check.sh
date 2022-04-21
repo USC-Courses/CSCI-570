@@ -16,8 +16,13 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+pushd $(pwd) >/dev/null
+cd $(dirname "$0")/../
+
 if [ ${INPLACE} -eq 0 ]; then
     find src/cpp -name '*.cpp' | xargs clang-format --Werror --dry-run
 else
     find src/cpp -name '*.cpp' | xargs clang-format -i
 fi
+
+popd >/dev/null
