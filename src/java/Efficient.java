@@ -84,9 +84,6 @@ class Efficient {
         return num[m][1];
     }
 
-    public static String output1;
-    public static String output2;
-
     String[] divideConquerAlignment(String x, String y) {
         int m = x.length();
         int n = y.length();
@@ -276,17 +273,10 @@ class Efficient {
         return System.nanoTime() / 1e6;
     }
 
-    public void test() {
-        String x = "abcd";
-        String a = x.substring(0, 2);
-        String b = x.substring(2);
-    }
-
     public static void main(String args[]) {
         Efficient s = new Efficient();
         s.readFile(args[0]);
         s.readData();
-        s.test();
         String res = s.generateNumber(s1, s.convertListtoInt(num1));
         String res2 = s.generateNumber(s2, s.convertListtoInt(num2));
         double beforeUsedMem = getMemoryInKB();
