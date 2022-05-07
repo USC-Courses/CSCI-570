@@ -3,7 +3,7 @@ This repo contains the implementations of there different languages for CSCI-570
 
 ## Compile and Test
 ### Test All
-As there are three implementations in different languages(C++, Java, Python3), we provide a [bash script](https://github.com/USC-Courses/CSCI-570/blob/main/tools/run_test.sh) to help compile and test all programs.
+As there are three implementations in different languages(C++, Java, Python3), we provide a [bash script](tools/run_test.sh) to help compile and test all programs. A folder named **out** will be created in the same directory of test files and it will contains all generated output files.
 ```bash
 # Usage: run_test.sh [options]
 
@@ -32,10 +32,10 @@ $ ./src/cpp/basic.sh data/datapoints/in1.txt data/datapoints/cpp_basic.out
 # ./src/cpp/efficient.sh ${INPUT_FILEPATH} ${OUTPUT_FILEPATH}
 $ ./src/cpp/efficient.sh data/datapoints/in1.txt data/datapoints/cpp_efficient.out
 ```
-Note that please check whether the parent directory of output files exists or not(Some programs don't create folders automatically).
+**Note** that please check whether the parent directory of output files exists or not(Some programs don't create folders automatically).
 
 
-## Plots
+## Plot
 We compare the basic solution with the memory efficient solution for three languages on two aspects(time elapsed and memory used).
 Also, we compare the differences between these three languages.
 
@@ -57,10 +57,10 @@ $ python3 ./plot/plot.py
 
 ### Cross-language Comparison
 
-|              |                       Basic Solution                       |                  Memory Efficient Solution                   |            Basic + Memory Efficient            |
-| :----------: | :--------------------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------: |
+|              |                       Basic Solution                       |                  Memory Efficient Solution                         |            Basic + Memory Efficient            |
+| :----------: | :--------------------------------------------------------: | :----------------------------------------------------------------: | :--------------------------------------------: |
 | Memory Used  | ![compare_basic_memory](plot/img/compare_basic_memory.png) | ![compare_efficient_memory](plot/img/compare_efficient_memory.png) | ![compare_memory](plot/img/compare_memory.png) |
-| Time Elapsed |   ![compare_basic_time](plot/img/compare_basic_time.png)   | ![compare_efficient_time](plot/img/compare_efficient_time.png) |   ![compare_time](plot/img/compare_time.png)   |
+| Time Elapsed |   ![compare_basic_time](plot/img/compare_basic_time.png)   |   ![compare_efficient_time](plot/img/compare_efficient_time.png)   |   ![compare_time](plot/img/compare_time.png)   |
 
 
 ## Summary
